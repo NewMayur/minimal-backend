@@ -7,7 +7,7 @@ app = Flask(__name__)
 @app.route('/test')
 def test():
     env = os.getenv('ENV')
-    return f"{env} server is reachable!"
+    return f"CI/CD Test 1.0 : {env} server is reachable!"
 
 if __name__ == '__main__':
     host = os.getenv('HOST')
