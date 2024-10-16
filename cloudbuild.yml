@@ -1,0 +1,6 @@
+steps:
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args: ['-c', 'gcloud config set project YOUR_PROJECT_ID && gcloud app deploy']
+images:
+  - gcr.io/YOUR_PROJECT_ID/YOUR_IMAGE_NAME
