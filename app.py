@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/test')
 def test():
-    return "Stag Server is reachable"
+    return "Stag/Prod Server is reachable"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
