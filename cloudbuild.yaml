@@ -17,3 +17,6 @@ steps:
         fi
 images:
   - 'gcr.io/$PROJECT_ID/minimal-app:$SHORT_SHA'
+options:
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
+serviceAccount: "50348277979-compute@developer.gserviceaccount.com"
