@@ -14,7 +14,7 @@ RUN pip install -r requirements.txt
 COPY . .
 
 # Expose the port that the Flask app will run on
-EXPOSE 5000
+EXPOSE 8080
 
 # Command to run the application
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "app:app"]

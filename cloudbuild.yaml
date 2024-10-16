@@ -9,11 +9,11 @@ steps:
       - '-c'
       - |
         if [ "$BRANCH_NAME" == "develop" ]; then
-          gcloud run deploy minimal-app-dev --image gcr.io/$PROJECT_ID/minimal-app:$SHORT_SHA --region $_REGION --platform managed --update-env-vars ENV=dev,HOST=0.0.0.0,PORT=5000;
+          gcloud run deploy minimal-app-dev --image gcr.io/$PROJECT_ID/minimal-app:$SHORT_SHA --region $_REGION --platform managed --update-env-vars ENV=dev,HOST=0.0.0.0,PORT=8080;
         elif [ "$BRANCH_NAME" == "main" ]; then
-          gcloud run deploy minimal-app-stag --image gcr.io/$PROJECT_ID/minimal-app:$SHORT_SHA --region $_REGION --platform managed --update-env-vars ENV=stag,HOST=0.0.0.0,PORT=5000;
+          gcloud run deploy minimal-app-stag --image gcr.io/$PROJECT_ID/minimal-app:$SHORT_SHA --region $_REGION --platform managed --update-env-vars ENV=stag,HOST=0.0.0.0,PORT=8080;
         elif [[ "$TAG_NAME" == v* ]]; then
-          gcloud run deploy minimal-app-prod --image gcr.io/$PROJECT_ID/minimal-app:$SHORT_SHA --region $_REGION --platform managed --update-env-vars ENV=prod,HOST=0.0.0.0,PORT=5000;
+          gcloud run deploy minimal-app-prod --image gcr.io/$PROJECT_ID/minimal-app:$SHORT_SHA --region $_REGION --platform managed --update-env-vars ENV=prod,HOST=0.0.0.0,PORT=8080;
         fi
 images:
   - 'gcr.io/$PROJECT_ID/minimal-app:$SHORT_SHA'
