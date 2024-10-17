@@ -1,15 +1,30 @@
 # app.py
 import os
-from flask import Flask
+from flask import Flask, send_from_directory, jsonify
+from flask_cors import CORS
+from dotenv import load_dotenv
 
-app = Flask(__name__)
+# Load environment variables from .env file
+load_dotenv()
 
-@app.route('/test')
+app = Flask(__name__, static_url_path='')
+CORS(app, resources={r"/*": {"origins": "*"}})  # Enable CORS for all routes and origins
+app.config['CORS_HEADERS'] = 'Content-Type'
+
+@app.route('/')
+def home():
+    return send_from_directory('static', 'index.html')
+
+@app.route('/test', methods=['GET'])
 def test():
-    env = os.getenv('ENV')
-    return f"CI/CD Test 1.0 : {env} server is reachable!"
+    env = os.getenv('ENV', 'unknown')
+    return jsonify(message=f"CI/CD Test 1.0 : {env} server is reachable!")
+
+@app.route('/<path:path>')
+def serve_static_files(path):
+    return send_from_directory('static', path)
 
 if __name__ == '__main__':
-    host = os.getenv('HOST')
-    port = int(os.getenv('PORT'))
+    host = os.getenv('HOST', '0.0.0.0')
+    port = int(os.getenv('PORT', 5000))
     app.run(host=host, port=port, debug=True)
