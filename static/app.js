@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
-import { getRemoteConfig, fetchAndActivate } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-remote-config.js";
+import { getRemoteConfig, fetchAndActivate, getValue } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-remote-config.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -28,7 +28,8 @@ const mockRemoteConfig = {
 async function fetchRemoteConfig() {
     try {
         await fetchAndActivate(remoteConfig);
-        const apiUrl = remoteConfig.getValue('apiUrl').asString() || mockRemoteConfig.apiUrl;
+        // const.apiUrl = getRemoteConfig.getValue
+        const apiUrl = getValue(remoteConfig, 'apiUrl').asString() || mockRemoteConfig.apiUrl;
         console.log('API URL:', apiUrl);
         
         // Fetch the message from the backend using the fetched API URL
