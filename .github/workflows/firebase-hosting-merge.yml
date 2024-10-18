@@ -28,10 +28,11 @@ jobs:
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_MINIMAL_APP_10A70 }}
         run: |
+          firebase use default
           if [ "${{ github.ref }}" == "refs/heads/develop" ]; then
             ./deploy.sh dev
           elif [ "${{ github.ref }}" == "refs/heads/main" ]; then
             ./deploy.sh stag
-          elif [[ "${{ github.ref }}" == refs/tags/* ]]; then
+          elif [[ "${{ github.ref }}" == refs/tags/v* ]]; then
             ./deploy.sh prod
           fi
