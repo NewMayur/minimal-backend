@@ -15,6 +15,11 @@ jobs:
       - name: Set Environment Variable
         run: |
           ENV=$(echo "${{ github.event.ref }}" | sed 's/refs\/heads\///')
+          if [[ "$ENV" == "develop" ]]; then
+            ENV="dev"
+          elif [[ "$ENV" == "main" ]]; then
+            ENV="stag"
+          fi
           echo "ENV=$ENV" >> $GITHUB_ENV
 
       - uses: FirebaseExtended/action-hosting-deploy@v0
