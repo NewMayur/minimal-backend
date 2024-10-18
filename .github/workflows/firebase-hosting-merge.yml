@@ -35,8 +35,7 @@ jobs:
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_MINIMAL_APP_10A70 }}
         run: |
-          PROJECT_ID=minimal-app-10a70
-          firebase use --project $PROJECT_ID
+          firebase use minimal-app-10a70
           if [ "${{ github.ref }}" == "refs/heads/develop" ]; then
             ./deploy.sh dev
           elif [ "${{ github.ref }}" == "refs/heads/main" ]; then
