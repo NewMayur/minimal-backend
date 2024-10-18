@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "minimal-app-dev",
     "public": "static",
     "ignore": [
       "firebase.json",

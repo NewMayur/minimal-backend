@@ -25,4 +25,4 @@ fi
 cp $CONFIG_FILE firebase.json
 
 # Deploy to Firebase hosting site
-firebase deploy --only hosting:$site
+firebase deploy --only hosting:$site --project minimal-app-10a70 --json
