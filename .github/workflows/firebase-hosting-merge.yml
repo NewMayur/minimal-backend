@@ -32,8 +32,6 @@ jobs:
           gcloud auth activate-service-account --key-file=credentials.json
 
       - name: Run deploy.sh script
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_MINIMAL_APP_10A70 }}
         run: |
           firebase use minimal-app-10a70
           if [ "${{ github.ref }}" == "refs/heads/develop" ]; then
