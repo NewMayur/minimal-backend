@@ -30,6 +30,7 @@ jobs:
         run: |
           echo $GOOGLE_APPLICATION_CREDENTIALS > credentials.json
           gcloud auth activate-service-account --key-file=credentials.json
+          firebase login:ci --no-localhost
 
       - name: Run deploy.sh script
         run: |
