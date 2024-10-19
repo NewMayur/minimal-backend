@@ -11,9 +11,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
     env:
       GOOGLE_APPLICATION_CREDENTIALS: google-application-credentials.json
 
@@ -22,7 +19,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Determine environment
         run: |
-          if [[ "${{ github.ref }}" == 'refs/heads/develop' ]]; then
+          if [[ "${{ github.ref }}" == 'refs/heads/dev' ]]; then
             echo "Environment: dev"
             env=dev
             target=dev
@@ -38,23 +35,23 @@ jobs:
             echo "Unknown environment"
             exit 1
           fi
-      - name: Authenticate with Firebase
-        id: 'auth'
-        uses: google-github-actions/auth@v1
-        with:
-          token_format: 'access_token'
-          workload_identity_provider: ${{ secrets.FIREBASE_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          create_credentials_file: true
-      - uses: minherz/firebase-hosting-deploy@v1
-        with:
-          channelId: live
-          firebaseServiceAccount: "${{ steps.auth.outputs.credentials_file_path }}"
-          projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
-      # - name: Prepare Google Application Credentials
-      #   shell: bash
-      #   run: |
-      #     echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" | base64 --decode > "google-application-credentials.json"
+      # - name: Authenticate with Firebase
+      #   id: 'auth'
+      #   uses: google-github-actions/auth@v2
+      #   with:
+      #     token_format: 'access_token'
+      #     workload_identity_provider: ${{ secrets.FIREBASE_IDENTITY_PROVIDER }}
+      #     service_account: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+      #     create_credentials_file: true
+      # - uses: minherz/firebase-hosting-deploy@v1
+      #   with:
+      #     channelId: live
+      #     firebaseServiceAccount: "${{ steps.auth.outputs.credentials_file_path }}"
+      #     projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
+      - name: Prepare Google Application Credentials
+        shell: bash
+        run: |
+          echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" | base64 --decode > "google-application-credentials.json"
 
       - name: Deploy to Firebase
         run: firebase deploy --only hosting:$target --project ${{ secrets.FIREBASE_PROJECT_ID }} --force
