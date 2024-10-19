@@ -1,54 +1,8 @@
-<<<<<<< HEAD
-name: Deploy to Firebase Hosting on merge
-=======
 name: Firebase Deployment
->>>>>>> origin/feature
 
 on:
   push:
     branches:
-<<<<<<< HEAD
-      - develop
-      - main
-
-jobs:
-  build_and_deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set Environment Variable
-        run: |
-          ENV=$(echo "${{ github.event.ref }}" | sed 's/refs\/heads\///')
-          if [[ "$ENV" == "develop" ]]; then
-            ENV="dev"
-          elif [[ "$ENV" == "main" ]]; then
-            ENV="stag"
-          fi
-          echo "ENV=$ENV" >> $GITHUB_ENV
-
-      - uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_MINIMAL_APP_10A70 }}
-          channelId: live
-          projectId: minimal-app-10a70
-        env:
-          ENV: ${{ env.ENV }}
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install Firebase CLI
-        run: npm install -g firebase-tools
-
-      - name: Run deploy.sh script
-        run: |
-          chmod +x deploy.sh
-          ./deploy.sh ${{ env.ENV }}
-=======
       - dev
       - main
   release:
@@ -93,4 +47,3 @@ jobs:
           projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
       - name: Deploy to Firebase
         run: firebase deploy --only hosting:$target --project ${{ secrets.FIREBASE_PROJECT_ID }} --force
->>>>>>> origin/feature
