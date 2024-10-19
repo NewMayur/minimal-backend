@@ -1,6 +1,5 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
-import { getRemoteConfig, fetchAndActivate, getValue } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-remote-config.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -14,50 +13,24 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const remoteConfig = getRemoteConfig(app);
 
-// Set minimum fetch interval for Remote Config
-remoteConfig.settings.minimumFetchIntervalMillis = 3600000; // 1 hour
-
-// Mock Remote Config for local testing
-const mockRemoteConfig = {
-    apiUrl: 'http://localhost:5000/test' // Use your local API URL for testing
+// Environment-specific API URL
+const apiUrls = {
+    dev: 'https://minimal-app-dev-50348277979.us-central1.run.app/test',
+    stag: 'https://minimal-app-stag-50348277979.us-central1.run.app/test',
+    prod: 'https://minimal-app-prod-50348277979.us-central1.run.app/test'
 };
 
-// Fetch and activate Remote Config values
-async function fetchRemoteConfig() {
-    try {
-        await fetchAndActivate(remoteConfig);
-        // const.apiUrl = getRemoteConfig.getValue
-        const apiUrl = getValue(remoteConfig, 'apiUrl').asString() || mockRemoteConfig.apiUrl;
-        console.log('API URL:', apiUrl);
-        
-        // Fetch the message from the backend using the fetched API URL
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('message').textContent = data.message;
-            })
-            .catch(error => {
-                document.getElementById('message').textContent = 'Error fetching message';
-                console.error('Error:', error);
-            });
-    } catch (error) {
-        console.error('Remote Config Error:', error);
-        
-        // Use mock API URL if Remote Config fetch fails
-        const apiUrl = mockRemoteConfig.apiUrl;
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('message').textContent = data.message;
-            })
-            .catch(error => {
-                document.getElementById('message').textContent = 'Error fetching message';
-                console.error('Error:', error);
-            });
-    }
-}
+// Determine the environment
+const environment = 'dev'; // Change this to 'staging' or 'production' as needed
 
-// Call fetchRemoteConfig() when your app starts
-fetchRemoteConfig();
+// Fetch the message from the backend
+fetch(apiUrls[environment])
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('message').textContent = data.message;
+    })
+    .catch(error => {
+        document.getElementById('message').textContent = 'Error fetching message';
+        console.error('Error:', error);
+    });

@@ -1,8 +1,13 @@
+<<<<<<< HEAD
 name: Deploy to Firebase Hosting on merge
+=======
+name: Firebase Deployment
+>>>>>>> origin/feature
 
 on:
   push:
     branches:
+<<<<<<< HEAD
       - develop
       - main
 
@@ -43,3 +48,49 @@ jobs:
         run: |
           chmod +x deploy.sh
           ./deploy.sh ${{ env.ENV }}
+=======
+      - dev
+      - main
+  release:
+    types: [created]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Determine environment
+        run: |
+          if [[ "${{ github.ref }}" == 'refs/heads/dev' ]]; then
+            echo "Environment: dev"
+            env=dev
+            target=dev
+          elif [[ "${{ github.ref }}" == 'refs/heads/main' ]]; then
+            echo "Environment: stag"
+            env=stag
+            target=stag
+          elif [[ "${{ github.ref }}" == 'refs/tags/v*' ]]; then
+            echo "Environment: prod"
+            env=prod
+            target=prod
+          else
+            echo "Unknown environment"
+            exit 1
+          fi
+      - name: Authenticate with Firebase
+        id: 'auth'
+        uses: google-github-actions/auth@v2
+        with:
+          token_format: 'access_token'
+          workload_identity_provider: ${{ secrets.FIREBASE_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          create_credentials_file: true
+      - uses: minherz/firebase-hosting-deploy@v1
+        with:
+          channelId: live
+          firebaseServiceAccount: "${{ steps.auth.outputs.credentials_file_path }}"
+          projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
+      - name: Deploy to Firebase
+        run: firebase deploy --only hosting:$target --project ${{ secrets.FIREBASE_PROJECT_ID }} --force
+>>>>>>> origin/feature
