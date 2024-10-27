@@ -18,7 +18,7 @@ def home():
 @app.route('/test', methods=['GET'])
 def test():
     env = os.getenv('ENV', 'unknown')
-    return jsonify(message=f"CI/CD Test 1.0 : {env} server is reachable!")
+    return jsonify(message=f"{env} server is reachable!")
 
 @app.route('/<path:path>')
 def serve_static_files(path):
